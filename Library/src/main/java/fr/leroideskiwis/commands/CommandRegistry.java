@@ -9,15 +9,6 @@ import java.util.stream.Collectors;
 public class CommandRegistry<T> {
 
     private final HashMap<String, Command<T>> commands = new HashMap<>();
-    private BiConsumer<CommandInfo, T> onHelp;
-
-    public CommandRegistry(){
-        this((commandInfo, t) -> {});
-    }
-
-    public CommandRegistry(BiConsumer<CommandInfo, T> onHelp){
-        this.onHelp = onHelp;
-    }
 
     public void registerCommand(Command<T> command){
         commands.put(command.toString(), command);
