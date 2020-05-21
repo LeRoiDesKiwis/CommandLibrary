@@ -16,7 +16,7 @@ public class Command<T> {
 
     public void run(T t, String[] args, CommandRegistry<T> globalRegistry){
         if(commandInfo.commandRegistry.execute(String.join(" ", args), t)) return;
-        commandInfo.commandExecutor.run(new CommandHandler<T>(globalRegistry, t, args));
+        commandInfo.commandExecutor.run(new CommandHandler<>(globalRegistry, t, args));
     }
 
     public CommandInfo<T> getInfos(){
@@ -26,6 +26,10 @@ public class Command<T> {
     @Override
     public String toString() {
         return commandInfo.toString();
+    }
+
+    public boolean hasAlias(String name){
+        return commandInfo.aliases.contains(name);
     }
 
     public static class CommandBuilder<T>{

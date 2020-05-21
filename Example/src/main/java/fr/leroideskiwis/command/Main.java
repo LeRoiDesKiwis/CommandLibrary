@@ -24,11 +24,14 @@ public class Main {
         makeFastCommand("kiwi", "kiwi kiwi", "kiwi", Arrays.asList("meilleurfruit", "oiseau"," kiui"));
 
         execute("help");
-        execute("help bite");
+        execute("help miam");
 
         for(CommandInfo<CustomContext> commandInfo : commandRegistry.getInfos()){
             execute("help "+commandInfo.name);
         }
+
+        execute("ergreg");
+        execute("damn coucou");
 
     }
 
@@ -42,7 +45,8 @@ public class Main {
                                 List<String> aliases){
         Command.CommandBuilder<CustomContext> commandBuilder = commandRegistry.createCommand(name)
                 .withUsage(usage)
-                .withDescription(description);
+                .withDescription(description)
+                .executes(new TestCommand());
 
         aliases.forEach(commandBuilder::addAliase);
         commandBuilder.register();

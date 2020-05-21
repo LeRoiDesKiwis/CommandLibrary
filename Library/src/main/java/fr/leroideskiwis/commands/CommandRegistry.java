@@ -2,6 +2,7 @@ package fr.leroideskiwis.commands;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -15,15 +16,11 @@ public class CommandRegistry<T> {
     }
 
     public CommandInfo<T> getInfos(String name){
-        return commands.get(name).getInfos();
+        return getCommand(name).get().getInfos();
     }
 
     public Command.CommandBuilder<T> createCommand(String name){
         return new Command.CommandBuilder<T>(this).withName(name);
-    }
-
-    public boolean hasCommand(String command){
-        return commands.containsKey(command);
     }
 
     public boolean execute(String message, T t){
@@ -32,12 +29,16 @@ public class CommandRegistry<T> {
         String[] args = new String[split.length-1];
         if (args.length >= 0) System.arraycopy(split, 1, args, 0, args.length);
 
-        if(hasCommand(split[0])){
-            Command<T> command = commands.get(split[0]);
-            command.run(t, args, this);
-            return true;
-        }
-        return false;
+        Optional<Command<T>> command = getCommand(split[0]);
+
+        command.ifPresent(cmd -> cmd.run(t, args, this));
+
+        return command.isPresent();
+    }
+
+    public Optional<Command<T>> getCommand(String name){
+        if(!commands.containsKey(name)) return commands.values().stream().filter(command -> command.hasAlias(name)).findAny();
+        return Optional.of(commands.get(name));
     }
 
     public List<CommandInfo<T>> getInfos(){

@@ -24,7 +24,7 @@ public class HelpCommand extends CommandExecutor<CustomContext> {
         }
 
         String commandString = commandData.args[0];
-        if(commandData.commandRegistry.hasCommand(commandString)){
+        if(commandData.commandRegistry.getCommand(commandString).isPresent()){
             CommandInfo<CustomContext> command = commandData.commandRegistry.getInfos(commandString);
             System.out.println("--- Infos sur la commande "+command.name+" ---");
             System.out.println(command.description);
