@@ -10,6 +10,11 @@ import java.util.stream.Collectors;
 public class CommandRegistry<T> {
 
     private final HashMap<String, Command<T>> commands = new HashMap<>();
+    private String prefixe;
+
+    public CommandRegistry(String prefixe){
+        this.prefixe = prefixe;
+    }
 
     public void registerCommand(Command<T> command){
         commands.put(command.toString(), command);
@@ -24,8 +29,8 @@ public class CommandRegistry<T> {
     }
 
     public boolean execute(String message, T t){
-        if(message.trim().equals("")) return false;
-        String[] split = message.split(" ");
+        if(message.trim().equals("") || !message.startsWith(prefixe)) return false;
+        String[] split = message.replaceFirst(prefixe, "").split(" ");
         String[] args = new String[split.length-1];
         if (args.length >= 0) System.arraycopy(split, 1, args, 0, args.length);
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Main {
 
-    private static CommandRegistry<CustomContext> commandRegistry = new CommandRegistry<>();
+    private static CommandRegistry<CustomContext> commandRegistry = new CommandRegistry<>(";");
 
     public static void main(String... args){
         commandRegistry.createCommand("help")
@@ -23,14 +23,15 @@ public class Main {
         makeFastCommand(":c:c:c:", ":c:c:c: override", ":mais:", Collections.singletonList("damn"));
         makeFastCommand("kiwi", "kiwi kiwi", "kiwi", Arrays.asList("meilleurfruit", "oiseau"," kiui"));
 
-        execute("help");
-        execute("help miam");
+        execute(";help");
+        execute(";help miam");
 
         for(CommandInfo<CustomContext> commandInfo : commandRegistry.getInfos()){
-            execute("help "+commandInfo.name);
+            execute(";help "+commandInfo.name);
         }
 
-        execute("ergreg");
+        execute(";ergreg");
+        execute(";damn coucou");
         execute("damn coucou");
 
     }
